@@ -162,7 +162,7 @@ public class InsertInformations extends ActionBarActivity
 
         return check;
     }
-
+ 
     private void getSpinnerValues()
     {
         /*************************** SPINNER PHYSICAL ACTIVITY ***************************/
