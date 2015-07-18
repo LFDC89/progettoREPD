@@ -3,13 +3,17 @@
 
     <!-- string definition -->
     <string name="app_name">Infoodrmations</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
+
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+
     <string name="nav_item_home">Home</string>
     <string name="nav_item_search">Search</string>
     <string name="nav_item_credits">Credits</string>
+
     <string name="title_home">Home</string>
     <string name="title_activity_start_page_activity">start_page_activity</string>
     <string name="title_search_page">Search</string>
@@ -36,22 +40,22 @@
 
     <!--  work type string array -->
     <string-array name="work_type">
-        <item> Sedentary </item>
-        <item> Light </item>
-        <item> Moderate </item>
-        <item> Weighty </item>
+        <item>Sedentary</item>
+        <item>Light</item>
+        <item>Moderate</item>
+        <item>Weighty</item>
     </string-array>
 
     <!-- physical activity type string array -->
     <string-array name="physical_activity">
-        <item> Less than 3 hours a week </item>
-        <item> Less than 4 hours a week </item>
-        <item> Less than 5 hours a week </item>
-        <item> Less than 6 hours a week </item>
-        <item> Less than 7 hours a week </item>
-        <item> Less than 8 hours a week </item>
-        <item> Less than 9 hours a week </item>
-        <item> Less than 10 hours a week </item>
+        <item>Less than 3 hours a week</item>
+        <item>Less than 4 hours a week</item>
+        <item>Less than 5 hours a week</item>
+        <item>Less than 6 hours a week</item>
+        <item>Less than 7 hours a week</item>
+        <item>Less than 8 hours a week</item>
+        <item>Less than 9 hours a week</item>
+        <item>Less than 10 hours a week</item>
     </string-array>
 
     <!-- past groups string array -->
