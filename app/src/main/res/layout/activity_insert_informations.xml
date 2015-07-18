@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="androidhive.info.materialdesign.fragments.HomeFragment">
+
+        <TextView
+            android:id="@+id/insert_info_textview1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="Calcola il tuo fabbisogno calorico giornaliero!"
+            android:textSize="30dp"/>
+
+        <TextView
+            android:id="@+id/insert_info_textview2"
+            android:layout_below="@+id/insert_info_textview1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:text="Inserisci le seguenti informazioni per calcolare il tuo fabbisogno calorico giornaliero.\n"
+            android:textSize="13dp"/>
+
+        <TextView
+            android:id="@+id/insert_info_textview_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_textview2"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="\nUsername"
+            android:textStyle="italic"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/insert_info_edittext_username"
+            android:layout_below="@+id/insert_info_textview_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:inputType="text"
+            android:hint=" Username... "/>
+
+        <TextView
+            android:id="@+id/insert_info_textview_spinner_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_edittext_username"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="\nSex"
+            android:textStyle="italic"/>
+
+        <Spinner
+            android:id="@+id/insert_info_spinner_gender"
+            android:layout_below="@+id/insert_info_textview_spinner_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:entries="@array/gender"/>
+
+        <TextView
+            android:id="@+id/insert_info_textview_age_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_spinner_gender"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="\nEtà"
+            android:textStyle="italic"/>
+
+        <EditText
+            android:id="@+id/insert_info_edittext_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_textview_age_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:textColor="@color/black"
+            android:inputType="number"
+            android:hint=" Età... "/>
+
+        <TextView
+            android:id="@+id/insert_info_textview_weight_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_edittext_age"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="\nPeso (kg)"
+            android:textStyle="italic"/>
+
+        <EditText
+            android:id="@+id/insert_info_edittext_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_textview_weight_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:textColor="@color/black"
+            android:inputType="numberDecimal"
+            android:hint=" Peso... "/>
+
+        <TextView
+            android:id="@+id/insert_info_textview_height_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_edittext_weight"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="\nAltezza (cm)"
+            android:textStyle="italic"/>
+
+        <EditText
+            android:id="@+id/insert_info_edittext_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_textview_height_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:textColor="@color/black"
+            android:inputType="number"
+            android:hint=" Altezza... "/>
+
+        <TextView
+            android:id="@+id/insert_info_textview_phys_act_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_edittext_height"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:text="\nAttività fisica"/>
+
+        <Spinner
+            android:id="@+id/insert_info_spinner_phys_act"
+            android:layout_below="@+id/insert_info_textview_phys_act_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:entries="@array/physical_activity"/>
+
+        <TextView
+            android:id="@+id/insert_info_textview_work_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_spinner_phys_act"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:text="\nLavoro"/>
+
+        <Spinner
+            android:id="@+id/insert_info_spinner_work"
+            android:layout_below="@+id/insert_info_textview_work_title"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:entries="@array/work_type"/>
+
+        <Button
+            android:id="@+id/insert_info_submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_info_spinner_work"
+            android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:textStyle="italic"
+            android:textColor="@color/white"
+            android:text="Calcola!"
+            android:onClick="calculate"/>
+
+    </RelativeLayout>
+  </ScrollView>
