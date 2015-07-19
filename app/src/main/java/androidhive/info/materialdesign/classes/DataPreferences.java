@@ -13,7 +13,9 @@ public class DataPreferences
     public static final String PUF_KEY = "ufl_key";
 
 
-    private DataPreferences() {}
+    private DataPreferences()
+    {
+    }
 
     public static void writePreference(Context context, String preference_name, String key, String value)
     {
@@ -21,33 +23,40 @@ public class DataPreferences
 
         // Writing data to SharedPreferences
         SharedPreferences.Editor editor = settings.edit();
-        // Reading from SharedPreferences
-        String user_foods_string = settings.getString(key, "no food added");
 
-        if (user_foods_string.equals("no food added"))
+
+        if (preference_name.equals(PREFS_USER_FOODS))
         {
-            editor.putString(key, value + ",");
-            editor.commit();
-        }
-        else
-        {
-            // add only new food
-            String[] temp = user_foods_string.split(",");
-            int check = 0;
+            // Reading old data with SharedPreferences
+            String user_foods_string = settings.getString(key, "no food added");
 
-            for (int i=0; i<temp.length; i++)
+            if (user_foods_string.equals("no food added"))
             {
-                if(temp[i].equals(value))
-                {
-                    check = 1;
-                    break;
-                }
-            }
-
-            if(check == 0)
-            {
-                editor.putString(key, user_foods_string + value + ",");
+                editor.putString(key, value + ",");
                 editor.commit();
+            }
+            else
+            {
+                // add only new food
+                String[] temp = user_foods_string.split(",");
+                int check = 0;
+
+                for (int i = 0;
+                     i < temp.length;
+                     i++)
+                {
+                    if (temp[i].equals(value))
+                    {
+                        check = 1;
+                        break;
+                    }
+                }
+
+                if (check == 0)
+                {
+                    editor.putString(key, user_foods_string + value + ",");
+                    editor.commit();
+                }
             }
         }
     }
@@ -56,11 +65,14 @@ public class DataPreferences
     {
         settings = context.getSharedPreferences(preference_name, Context.MODE_PRIVATE);
 
-        // Reading from SharedPreferences
-        String user_foods_string = settings.getString(key, "no food added");
+        if (preference_name.equals(PREFS_USER_FOODS))
+        {
+            // Reading from SharedPreferences
+            String user_foods_string = settings.getString(key, "no food added");
+            return user_foods_string;
+        }
 
 
-        return  user_foods_string;
-
+        return null;
     }
 }
