@@ -71,6 +71,9 @@ public class InsertInformations extends ActionBarActivity
                 {
                     double total_calories = calculate();
                     Toast.makeText(InsertInformations.this, "TOTAL CALORIES: "+Double.toString(total_calories), Toast.LENGTH_SHORT).show();
+                    // start the MainActivity
+                    Intent openMainActivity = new Intent(InsertInformations.this, MainActivity.class);
+                    startActivity(openMainActivity);
                 }
             }
         });
@@ -142,13 +145,12 @@ public class InsertInformations extends ActionBarActivity
             Toast.makeText(InsertInformations.this, "Enter correct age", Toast.LENGTH_SHORT).show();
         }
 
+        Log.d( " CHECK ------------------------>", temp_height + "-" + Integer.toString(temp_height.length()) );
+        Log.d( " CHECK ------------------------>", temp_weight + "-" + Integer.toString(temp_weight.length()) );
+        Log.d(" CHECK ------------------------>", temp_age + "-" + Integer.toString(temp_age.length()));
+
         if (check == 0)
         {
-            Log.d( " CHECK ------------------------>", temp_height + "-" + Integer.toString(temp_height.length()) );
-            Log.d( " CHECK ------------------------>", temp_weight + "-" + Integer.toString(temp_weight.length()) );
-            Log.d(" CHECK ------------------------>", temp_age + "-" + Integer.toString(temp_age.length()));
-
-
             age    = Integer.valueOf(temp_age);
             height = Integer.valueOf(temp_height);
             weight = Integer.valueOf(temp_weight);
