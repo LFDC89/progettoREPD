@@ -19,6 +19,7 @@
 
         <!--TITLE-->
         <TextView
+            android:id="@+id/activity_insert_informations_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"
@@ -127,6 +128,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Calculate"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
             android:layout_marginTop="6dp"/>
 
     </LinearLayout>

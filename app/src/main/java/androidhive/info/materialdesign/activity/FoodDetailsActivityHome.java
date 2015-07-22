@@ -52,7 +52,7 @@ public class FoodDetailsActivityHome extends ActionBarActivity
 
             // putting food's name into text view
             TextView foodNameHome = (TextView) findViewById(R.id.activity_food_details_home_textview_foodsName);
-            Typeface future_font = Typeface.createFromAsset(getAssets(),"fonts/future.ttf");
+            Typeface future_font = Typeface.createFromAsset(getAssets(),"fonts/a song for jennifer.ttf");
             foodNameHome.setTypeface(future_font);
 
             foodNameHome.setText(food_name_home);

@@ -78,6 +78,6 @@
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
         android:text=" Bottone di prova "
-        android:onClick="prova"
+        android:onClick="custom_portion"
         />
 </RelativeLayout>

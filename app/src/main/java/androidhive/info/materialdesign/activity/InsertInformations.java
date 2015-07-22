@@ -1,6 +1,7 @@
 package androidhive.info.materialdesign.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidhive.info.materialdesign.R;
@@ -20,13 +22,13 @@ import androidhive.info.materialdesign.R;
 public class InsertInformations extends ActionBarActivity
 {
     EditText eT_username = null,
-             eT_age      = null,
-             eT_weight   = null,
-             eT_height   = null;
+            eT_age      = null,
+            eT_weight   = null,
+            eT_height   = null;
 
     Spinner  sp_gender  = null,
-             sp_psy_act = null,
-             sp_work    = null;
+            sp_psy_act = null,
+            sp_work    = null;
 
     Button   btn_calculate = null;
 
@@ -42,56 +44,56 @@ public class InsertInformations extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
+
         // load the xml
         setContentView(R.layout.activity_insert_informations);
 
-        // EDITS TEXT
-        eT_username = (EditText) findViewById(R.id.insert_info_editText_username);
-        eT_age      = (EditText) findViewById(R.id.insert_info_editText_age);
-        eT_height   = (EditText) findViewById(R.id.insert_info_editText_height);
-        eT_weight   = (EditText) findViewById(R.id.insert_info_editText_weight);
+        // set custom font on activity title
+        TextView InsertInformations_title_textView = (TextView) findViewById(R.id.activity_insert_informations_title);
+        Typeface CF_insert_informations_title = Typeface.createFromAsset(getAssets(),"fonts/a song for jennifer.ttf");
+        InsertInformations_title_textView.setTypeface(CF_insert_informations_title);
 
-        // SPINNERS (find and fill)
-        sp_gender  = (Spinner) findViewById(R.id.insert_info_spinner_gender);
-        sp_psy_act = (Spinner) findViewById(R.id.insert_info_spinner_phys_act);
-        sp_work    = (Spinner) findViewById(R.id.insert_info_spinner_work);
-
-        fillSpinners();
+        // set spinners values
+        setSpinners();
 
         // BUTTON
         btn_calculate = (Button) findViewById(R.id.insert_info_submit_button);
-
 
         btn_calculate.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
+
                 int check;
 
                 // check the edits text values
                 check = getEditsTextValues();
-                Log.d( " CHECK ------------------------> ", Integer.toString(check) );
+                getSpinnerValues();
 
+                Log.d( " CHECK ------------------------> ", Integer.toString(check) );
 
                 if (check == 0)
                 {
-                    getSpinnerValues();
                     double total_calories = calculate();
-
                     Toast.makeText(InsertInformations.this, "TOTAL CALORIES: "+Double.toString(total_calories), Toast.LENGTH_SHORT).show();
+                    // start the MainActivity
+                    Intent openMainActivity = new Intent(InsertInformations.this, MainActivity.class);
+                    startActivity(openMainActivity);
                 }
             }
         });
 
-
-
     }
 
-    private void fillSpinners()
+    private void setSpinners()
     {
+        // SPINNERS (find and fill)
+        sp_gender  = (Spinner) findViewById(R.id.insert_info_spinner_gender);
+        sp_psy_act = (Spinner) findViewById(R.id.insert_info_spinner_phys_act);
+        sp_work    = (Spinner) findViewById(R.id.insert_info_spinner_work);
+
         /*************************** SPINNER PHYSICAL ACTIVITY ***************************/
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> phy_act_adapter = ArrayAdapter.createFromResource(this, R.array.physical_activity, android.R.layout.simple_spinner_item);
@@ -113,6 +115,12 @@ public class InsertInformations extends ActionBarActivity
 
     private int getEditsTextValues()
     {
+        // EDITS TEXT
+        eT_username = (EditText) findViewById(R.id.insert_info_editText_username);
+        eT_age      = (EditText) findViewById(R.id.insert_info_editText_age);
+        eT_height   = (EditText) findViewById(R.id.insert_info_editText_height);
+        eT_weight   = (EditText) findViewById(R.id.insert_info_editText_weight);
+
         int check = 0;
 
         // get edit text values
@@ -120,9 +128,6 @@ public class InsertInformations extends ActionBarActivity
         String temp_height   = eT_height.getText().toString();
         String temp_weight   = eT_weight.getText().toString();
         String temp_age      = eT_age.getText().toString();
-
-
-
 
 
         // check edit text values
@@ -147,75 +152,30 @@ public class InsertInformations extends ActionBarActivity
             Toast.makeText(InsertInformations.this, "Enter correct age", Toast.LENGTH_SHORT).show();
         }
 
+        Log.d( " CHECK ------------------------>", temp_height + "-" + Integer.toString(temp_height.length()) );
+        Log.d( " CHECK ------------------------>", temp_weight + "-" + Integer.toString(temp_weight.length()) );
+        Log.d(" CHECK ------------------------>", temp_age + "-" + Integer.toString(temp_age.length()));
+
         if (check == 0)
         {
-            Log.d( " CHECK ------------------------> ", temp_height );
-            Log.d( " CHECK ------------------------> ", temp_weight );
-            Log.d(" CHECK ------------------------> ", temp_age);
-
-
-            age = (Integer.getInteger(temp_age));
-            height = Integer.getInteger(temp_height);
-            weight = Integer.getInteger(temp_weight);
+            age    = Integer.valueOf(temp_age);
+            height = Integer.valueOf(temp_height);
+            weight = Integer.valueOf(temp_weight);
 
         }
 
         return check;
     }
- 
+
     private void getSpinnerValues()
     {
-        /*************************** SPINNER PHYSICAL ACTIVITY ***************************/
-        sp_psy_act.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-            {
-               public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
-               {
-                   phy_act = (String) parent.getItemAtPosition(pos);
-                   Log.d("1111111111: ", phy_act);
-               }
+        gender  = sp_gender.getSelectedItem().toString();
+        work    = sp_work.getSelectedItem().toString();
+        phy_act = sp_psy_act.getSelectedItem().toString();
 
-               public void onNothingSelected(AdapterView<?> parent)
-               {
-                   phy_act = "Less than 3 hours a week";
-                   Log.d("2222222222: ", phy_act);
-               }
-            }
-        );
-
-        /*************************** SPINNER GENDER ***************************/
-        sp_gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-            {
-             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
-             {
-                 gender = (String) parent.getItemAtPosition(pos);
-                 Log.d("333333333: ", gender);
-             }
-
-             public void onNothingSelected(AdapterView<?> parent)
-             {
-                 gender = "Male";
-                 Log.d("4444444444: ", gender);
-             }
-            }
-        );
-
-        /*************************** SPINNER WORK ***************************/
-        sp_work.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-            {
-             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
-             {
-                 work = (String) parent.getItemAtPosition(pos);
-                 Log.d("555555555555: ", work);
-             }
-
-             public void onNothingSelected(AdapterView<?> parent)
-             {
-                 work = "Sedentary";
-                 Log.d("6666666666666: ", work);
-             }
-            }
-        );
+        //Log.d( " SPINNER------------->", gender + "-" + work + "-" + phy_act);
     }
+
 
     // TO COMPUTE BASAL METABOLISM
     // WOMEN: 655 + (9.6*weight(kg)) + (1.8*height(cm)) - (4.7*years)
@@ -249,8 +209,8 @@ public class InsertInformations extends ActionBarActivity
         }
 
         // compute the daily calories needed
-        daily_calories = basal_metabolism * 0.10;
 
+        daily_calories = basal_metabolism * 0.10;
         // add the works informations
         if (work.equals("Sedentary"))
         {
@@ -313,6 +273,7 @@ public class InsertInformations extends ActionBarActivity
 
         return total_calories_needed;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

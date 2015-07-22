@@ -1,10 +1,9 @@
 package androidhive.info.materialdesign.activity;
 
 import android.content.Intent;
-
 import android.graphics.Typeface;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,16 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import java.util.List;
 
+import androidhive.info.materialdesign.R;
 import androidhive.info.materialdesign.classes.DataPreferences;
 import androidhive.info.materialdesign.classes.Food;
 import androidhive.info.materialdesign.classes.FoodsData;
 import androidhive.info.materialdesign.classes.Nutrient;
-import androidhive.info.materialdesign.R;
 
 public class FoodDetailsActivitySearch extends ActionBarActivity
 {
@@ -89,7 +86,7 @@ public class FoodDetailsActivitySearch extends ActionBarActivity
 
 
             // setting custom fonts
-            Typeface CF_food_name_search = Typeface.createFromAsset(getAssets(),"fonts/future.ttf");
+            Typeface CF_food_name_search = Typeface.createFromAsset(getAssets(),"fonts/a song for jennifer.ttf");
             food_name_search_textView.setTypeface(CF_food_name_search);
 
             TextView nutrients_search_textView = (TextView) findViewById(R.id.activity_food_details_search_textview_foodsNutrients);
@@ -99,6 +96,8 @@ public class FoodDetailsActivitySearch extends ActionBarActivity
             TextView info_search_textView = (TextView) findViewById(R.id.activity_food_details_search_info);
             Typeface CF_info_search = Typeface.createFromAsset(getAssets(), "fonts/Girls_Have_Many Secrets.ttf");
             info_search_textView.setTypeface(CF_info_search);
+
+
 
 
         }
@@ -147,17 +146,20 @@ public class FoodDetailsActivitySearch extends ActionBarActivity
 
     public void prova(View view)
     {
+         /* CUSTOM PORTION STUFF */
         final EditText portion_input = (EditText) findViewById(R.id.activity_food_details_search_insertPortion);
-
-        // coefficient that allows to well define custom portion
-        double coefficient = 1.0;
-        double newPortion = 1.0;
+        double newPortion = 0.0;
         double standardPortion = 100.0;
         double oldNutrient = 0.0;
         double newNutrient = 0.0;
 
         // read value from editText and parsing to double
-        newPortion = Double.parseDouble(portion_input.getText().toString());
+        // if the user don't modify portion, this it's setted at the default value 100 in order to obtain a
+        // coefficient equals to 1
+        if(portion_input.length()<=0)
+            newPortion = 100.0;
+        else
+            newPortion = Double.parseDouble(portion_input.getText().toString());
 
         // point to all the data
         List<Food> temp = FoodsData.foodsData;
@@ -169,6 +171,9 @@ public class FoodDetailsActivitySearch extends ActionBarActivity
         List<Nutrient> tmp_nut_list = tmp_food.getNutList();
 
         int nutListSize = tmp_nut_list.size();
+
+        double coefficient[] = new double[nutListSize];
+
         String displayString = new String();
         String nutrientName[] = new String[nutListSize];
         String nutrientValue[] = new  String[nutListSize];
@@ -176,28 +181,14 @@ public class FoodDetailsActivitySearch extends ActionBarActivity
         for(int i=0; i<tmp_nut_list.size();i++)
         {
             // shortcuts
-            nutrientName[i]  = tmp_nut_list.get(i).getName();
+            nutrientName[i] = tmp_nut_list.get(i).getName();
             nutrientValue[i] = tmp_nut_list.get(i).getValue();
 
             // parsing string to double
             oldNutrient = Double.parseDouble(nutrientValue[i]);
 
             // coefficient calculation
-            coefficient = oldNutrient / standardPortion;
-
-            // new nutrient value calculation
-            newNutrient = coefficient * newPortion;
-
-            // parsing double to string
-            nutrientValue[i] = String.valueOf(newNutrient);
-
-            // control string (delete when this code will be accorporated to the add button)
-            displayString += "\n" + nutrientName[i] + " " + nutrientValue[i];
+            coefficient[i] = oldNutrient / standardPortion;
         }
-
-        // control toast message (delete when this code will be accorporated to the add button)
-        Toast msg = Toast.makeText(getBaseContext(), displayString, Toast.LENGTH_LONG);
-        msg.show();
     }
-
 }

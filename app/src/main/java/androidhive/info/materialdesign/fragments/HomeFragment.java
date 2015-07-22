@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,11 +27,20 @@ import androidhive.info.materialdesign.classes.Food;
 import androidhive.info.materialdesign.classes.FoodsData;
 import androidhive.info.materialdesign.R;
 import androidhive.info.materialdesign.activity.FoodDetailsActivityHome;
+import androidhive.info.materialdesign.classes.Nutrient;
 
 
 public class HomeFragment extends Fragment
 {
     public Context context = null;
+
+    // test variables (to delete as soon as we finish the settings stuff)
+    private int kcal_total = 2300;
+    private int kcal_consumed = 0;
+    private double lipids = 0.0;
+    private double carbohydrates = 0.0;
+    private double proteins = 0.0;
+
 
     // adapter for the listView in this fragment
     public static ArrayAdapter<String> mUserFoodAdapter = null;
@@ -50,7 +60,6 @@ public class HomeFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-
         // get all the foods data in the JSON file and stored in the FoodsData static class
         List<Food> data = FoodsData.foodsData;
 
@@ -124,62 +133,10 @@ public class HomeFragment extends Fragment
         //}
 
 
-        // Sezione relativa alla progress bar delle calorie
-
-        /* PROGRESS BAR STUFF */
-        final ProgressBar progressBar_kcal = (ProgressBar) rootView.findViewById(R.id.fragment_home_progressBar);
-        final int kcal_progressStatus = 0;
-        final int kcal_max = 100; // variabile kcal_max che dovra essere letta da InsertInformations
-        final android.os.Handler handler_kcal = new android.os.Handler();
-        /*
-        // Aggiorno la progress bar
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                while(kcal_progressStatus<kcal_max)
-                {
-                    // Qui ci va il codice che aggiorna il progress Status
-                    // ci va un metodo del tipo onClick {progressstatus + = calories food}
-
-                    // aggiorno la progress bar
-                    handler_kcal.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar_kcal.setProgress(kcal_progressStatus);
-                        }
-                    });
-                }
-            }
-        }).start();
-        */
-        // Sezione relativa alla progress bar dei carboidrati (non c'e il while perche non abbiamo un massimo di carboidrati)
-        final ProgressBar progressBar_carboidrats = (ProgressBar) rootView.findViewById(R.id.fragment_home_carboidrats_progress_bar);
-        final int carboidrats_progressStatus = 0;
-        final android.os.Handler handler_carboidrats = new android.os.Handler();
-
-        /*
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                // Qui ci va il codice che aggiorna il progress Status
-                // ....
-
-                // aggiorno la progress bar
-                handler_carboidrats.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar_carboidrats.setProgress(carboidrats_progressStatus);
-                    }
-                });
-            }
-        }).start();
-        */
 
 
+
+        /* GRAPHIC STUFF */
         // getting text view to apply custom font
         TextView title_home_textView = (TextView) rootView.findViewById(R.id.fragment_home_title);
         Typeface CF_title_home = Typeface.createFromAsset(getActivity().getAssets(), "fonts/a song for jennifer.ttf");
@@ -188,15 +145,91 @@ public class HomeFragment extends Fragment
         // since the nutrients text view have the same font, we define a "general" custom font for nutrients names
         Typeface CF_nutrients_home = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Girls_Have_Many Secrets.ttf");
 
+        // apply custom font to kcal values
+        TextView kcal_consumed_textView = (TextView) rootView.findViewById(R.id.fragment_home_kcal_consumed);
+        TextView kcal_total_textView = (TextView) rootView.findViewById(R.id.fragment_home_kcal_total);
+        kcal_consumed_textView.setTypeface(CF_nutrients_home);
+        kcal_total_textView.setTypeface(CF_nutrients_home);
+
         // apply nutrients custom font to all nutrients text view
-        TextView proteins_textView = (TextView) rootView.findViewById(R.id.fragment_home_proteins);
-        proteins_textView.setTypeface(CF_nutrients_home);
+        TextView proteins_title_textView = (TextView) rootView.findViewById(R.id.fragment_home_proteins);
+        proteins_title_textView.setTypeface(CF_nutrients_home);
 
-        TextView carboidrats_textView = (TextView) rootView.findViewById(R.id.fragment_home_carboidrats);
-        carboidrats_textView.setTypeface(CF_nutrients_home);
+        TextView carboidrats_title_textView = (TextView) rootView.findViewById(R.id.fragment_home_carboidrats);
+        carboidrats_title_textView.setTypeface(CF_nutrients_home);
 
-        TextView lipids_textView = (TextView) rootView.findViewById(R.id.fragment_home_lipids);
-        lipids_textView.setTypeface(CF_nutrients_home);
+        TextView lipids_title_textView = (TextView) rootView.findViewById(R.id.fragment_home_lipids);
+        lipids_title_textView.setTypeface(CF_nutrients_home);
+
+        TextView proteins_value_textView = (TextView) rootView.findViewById(R.id.fragment_home_proteins_value);
+        proteins_value_textView.setTypeface(CF_nutrients_home);
+
+        TextView carbohydrates_value_textView = (TextView) rootView.findViewById(R.id.fragment_home_carbohydrates_value);
+        carbohydrates_value_textView.setTypeface(CF_nutrients_home);
+
+        TextView lipids_value_textview = (TextView) rootView.findViewById(R.id.fragment_home_lipids_value);
+        lipids_value_textview.setTypeface(CF_nutrients_home);
+
+
+
+
+        /* PROGRESS BAR STUFF */
+        // for loop in wich I get the foods elements and extract all nutrients value, in order to
+        // update the total consumes
+        List<Food> temp = FoodsData.foodsData;
+
+        // default case
+        if (start_data_string.equals("no food added"))
+            ;
+
+        else if (data == null)
+            ;
+
+        else {
+            for (int i = 0; i < start_data_indexes.length; i++) {
+                // obtain the index of the current food
+                int food_position = Integer.parseInt(start_data_indexes[i]);
+
+                // obtain the i-th food
+                Food temp_food = temp.get(food_position);
+
+                // obtain the nutrient list
+                List<Nutrient> nut_temp_list = temp_food.getNutList();
+
+                for (int j = 0; j < nut_temp_list.size(); j++) {
+                    if (nut_temp_list.get(j).getName().equals("Protein"))
+                        proteins = proteins + Double.parseDouble(nut_temp_list.get(j).getValue());
+
+                    else if (nut_temp_list.get(j).getName().equals("Total lipid (fat)"))
+                        lipids = lipids + Double.parseDouble(nut_temp_list.get(j).getValue());
+
+                    else if ((nut_temp_list.get(j).getName().equals("Carbohydrate, by difference")) || (nut_temp_list.get(j).getName().equals("Carbohydrate")))
+                        carbohydrates = carbohydrates + Double.parseDouble(nut_temp_list.get(j).getValue());
+
+                    else if (nut_temp_list.get(j).getName().equals("Energy"))
+                        kcal_consumed = kcal_consumed + Integer.parseInt(nut_temp_list.get(j).getValue());
+                }
+            }
+        }
+
+        // update text view values
+        String proteins_string = String.valueOf(proteins);
+        String carbohydrates_string = String.valueOf(carbohydrates);
+        String lipids_string = String.valueOf(lipids);
+
+        // display only the first 2 decimal values
+        proteins_value_textView.setText(proteins_string.substring(0, 5));
+        carbohydrates_value_textView.setText(carbohydrates_string.substring(0,5));
+        lipids_value_textview.setText(lipids_string.substring(0,5));
+
+        kcal_consumed_textView.setText(String.valueOf(kcal_consumed));
+        kcal_total_textView.setText(String.valueOf(kcal_total));
+
+        // updating progress bar values
+        final  ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.fragment_home_progressBar);
+        progressBar.setMax(kcal_total);
+        progressBar.setProgress(kcal_consumed);
+
         return rootView;
     }
 
@@ -211,6 +244,5 @@ public class HomeFragment extends Fragment
     {
         super.onDetach();
     }
-
 
 }
