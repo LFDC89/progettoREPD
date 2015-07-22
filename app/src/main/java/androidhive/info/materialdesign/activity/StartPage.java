@@ -41,9 +41,9 @@ public class StartPage extends ActionBarActivity
                 // wait loading data from the xml
                 while(FoodsData.foodsData == null);
 
-                // start the MainActivity
-                Intent openMainActivity = new Intent(StartPage.this, InsertInformations.class);
-                startActivity(openMainActivity);
+                // start the Activity
+                Intent openActivity = new Intent(StartPage.this, InsertInformations.class);
+                startActivity(openActivity);
 
             }
         });

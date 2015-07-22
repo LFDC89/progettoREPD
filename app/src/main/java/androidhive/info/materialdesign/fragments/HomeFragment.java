@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +34,9 @@ import androidhive.info.materialdesign.classes.Nutrient;
 public class HomeFragment extends Fragment
 {
     public Context context = null;
+    List<Food> data = null;
+    String  start_data_string = null;
+    String[] start_data_indexes = null;
 
     // test variables (to delete as soon as we finish the settings stuff)
     private int kcal_total = 2300;
@@ -60,41 +64,9 @@ public class HomeFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        // get all the foods data in the JSON file and stored in the FoodsData static class
-        List<Food> data = FoodsData.foodsData;
-
-        // retrieve user foods stored with SharedPreferences method (saved just the indexes)
-        String  start_data_string = DataPreferences.readPreference(context, DataPreferences.PREFS_USER_FOODS, DataPreferences.PUF_KEY);
-
-        // split data indexes, because are separated with commas
-        final String[] start_data_indexes = start_data_string.split(",");
 
         // build starting data for the HomeFragment listView
-        List<String> start_data = new ArrayList<String>();
-
-        // default case
-        if (start_data_string.equals("no food added"))
-            start_data.add("no food added");
-
-        else if (data == null)
-            start_data.add("loading data");
-
-        else
-        {
-            // for each food saved by the user
-            for (int i = 0; i < start_data_indexes.length; i++)
-            {
-                // obtain the index of the current food
-                int food_position = Integer.parseInt(start_data_indexes[i]);
-
-                // add food description in the listView
-                start_data.add(data.get(food_position).getDescription());
-
-                // just a LOG
-                // Log.d(" Home fragment: ----> ", data.get(food_position).getDescription());
-
-            }
-        }
+        List<String> start_data = getUserFoods();
 
         mUserFoodAdapter = new ArrayAdapter<String>(
                 context,                            // the current context (this activity)
@@ -123,16 +95,6 @@ public class HomeFragment extends Fragment
                 startActivity(intent);
             }
         });
-
-
-        // IF the HomeFragment called via intent.  Inspect the intent for forecast data.
-        //Intent intent = getActivity().getIntent();
-        //if (intent != null)
-        //{
-        //    Log.v("INDENT HOME ", " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ");
-        //}
-
-
 
 
 
@@ -174,29 +136,27 @@ public class HomeFragment extends Fragment
 
 
         /* PROGRESS BAR STUFF */
-        // for loop in wich I get the foods elements and extract all nutrients value, in order to
+        // for loop in witch I get the foods elements and extract all nutrients value, in order to
         // update the total consumes
-        List<Food> temp = FoodsData.foodsData;
 
         // default case
-        if (start_data_string.equals("no food added"))
-            ;
-
-        else if (data == null)
-            ;
-
-        else {
-            for (int i = 0; i < start_data_indexes.length; i++) {
+        if (start_data_string.equals("no food added"));
+        else if (data == null);
+        else
+        {
+            for (int i = 0; i < start_data_indexes.length; i++)
+            {
                 // obtain the index of the current food
                 int food_position = Integer.parseInt(start_data_indexes[i]);
 
                 // obtain the i-th food
-                Food temp_food = temp.get(food_position);
+                Food temp_food = data.get(food_position);
 
                 // obtain the nutrient list
                 List<Nutrient> nut_temp_list = temp_food.getNutList();
 
-                for (int j = 0; j < nut_temp_list.size(); j++) {
+                for (int j = 0; j < nut_temp_list.size(); j++)
+                {
                     if (nut_temp_list.get(j).getName().equals("Protein"))
                         proteins = proteins + Double.parseDouble(nut_temp_list.get(j).getValue());
 
@@ -212,18 +172,21 @@ public class HomeFragment extends Fragment
             }
         }
 
+        // GET TOTAL USER KCAL
+        kcal_total = get_user_kcal().intValue();
+
         // update text view values
-          String proteins_string = String.valueOf(proteins);
-          String carbohydrates_string = String.valueOf(carbohydrates);
-          String lipids_string = String.valueOf(lipids);
+        String proteins_string      = String.valueOf(proteins);
+        String carbohydrates_string = String.valueOf(carbohydrates);
+        String lipids_string        = String.valueOf(lipids);
 
         // display only the first 2 decimal values
-          proteins_value_textView.setText(proteins_string.substring(0, 5));
-          carbohydrates_value_textView.setText(carbohydrates_string);
-          lipids_value_textview.setText(lipids_string.substring(0, 5));
+        proteins_value_textView      .setText(proteins_string.substring(0, 5));
+        carbohydrates_value_textView .setText(carbohydrates_string.substring(0, 5));
+        lipids_value_textview        .setText(lipids_string.substring(0, 5));
 
-        kcal_consumed_textView.setText(String.valueOf(kcal_consumed));
-        kcal_total_textView.setText(String.valueOf(kcal_total));
+        kcal_consumed_textView .setText(String.valueOf(kcal_consumed));
+        kcal_total_textView    .setText(String.valueOf(kcal_total));
 
         double percentage = (double) kcal_consumed/kcal_total * 100;
 
@@ -236,7 +199,66 @@ public class HomeFragment extends Fragment
         return rootView;
     }
 
-    @Override
+
+    public List<String> getUserFoods()
+    {
+        // get all the foods data in the JSON file and stored in the FoodsData static class
+        data = FoodsData.foodsData;
+
+        // retrieve user foods stored with SharedPreferences method (saved just the indexes)
+        start_data_string = DataPreferences.readPreference(context, DataPreferences.PREFS_USER_FOODS, DataPreferences.PUF_KEY);
+
+        // split data indexes, because are separated with commas
+        start_data_indexes = start_data_string.split(",");
+
+        // build starting data for the HomeFragment listView
+        List<String> start_data = new ArrayList<String>();
+
+        // default case
+        if (start_data_string.equals("no food added"))
+            start_data.add("no food added");
+
+        else if (data == null)
+            start_data.add("loading data");
+
+        else
+        {
+            // for each food saved by the user
+            for (int i = 0; i < start_data_indexes.length; i++)
+            {
+                // obtain the index of the current food
+                int food_position = Integer.parseInt(start_data_indexes[i]);
+
+                // add food description in the listView
+                start_data.add(data.get(food_position).getDescription());
+
+                // just a LOG
+                // Log.d(" Home fragment: ----> ", data.get(food_position).getDescription());
+
+            }
+        }
+
+        return start_data;
+    }
+
+    public Double get_user_kcal()
+    {
+        String temp_user_info = DataPreferences.readPreference(context, DataPreferences.PREFS_USER_INFO, DataPreferences.PUI_KEY);
+
+        if (!temp_user_info.equals("no user info"))
+        {
+            String[] info = temp_user_info.split(",");
+
+            Double temp = Double.valueOf(info[1]);
+
+            return temp;
+        }
+        else
+        {
+            Double default_value = 500.3;
+            return default_value;
+        }
+    }
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
@@ -247,5 +269,6 @@ public class HomeFragment extends Fragment
     {
         super.onDetach();
     }
+
 
 }

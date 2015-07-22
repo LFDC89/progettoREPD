@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidhive.info.materialdesign.R;
+import androidhive.info.materialdesign.classes.DataPreferences;
 
 public class InsertInformations extends ActionBarActivity
 {
@@ -77,7 +78,20 @@ public class InsertInformations extends ActionBarActivity
                 if (check == 0)
                 {
                     double total_calories = calculate();
-                    Toast.makeText(InsertInformations.this, "TOTAL CALORIES: "+Double.toString(total_calories), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InsertInformations.this, "TOTAL CALORIES: "+ Double.toString(total_calories), Toast.LENGTH_SHORT).show();
+
+                    // store user informations with SharedPreferences
+                    String user_info =  username + ","
+                                        + total_calories + ","
+                                        + gender + ","
+                                        + work + ","
+                                        + phy_act + ","
+                                        + Integer.toString(age) + ","
+                                        + Integer.toString(height) + ","
+                                        + Integer.toString(weight);
+                    DataPreferences.writePreference(getApplicationContext(), DataPreferences.PREFS_USER_INFO, DataPreferences.PUI_KEY, user_info);
+
+
                     // start the MainActivity
                     Intent openMainActivity = new Intent(InsertInformations.this, MainActivity.class);
                     startActivity(openMainActivity);
