@@ -35,6 +35,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-
+    <Button
+        android:id="@+id/activity_food_details_home_deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_food_details_home_textview_foodsNutrients"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:text=" Delete "
+        android:onClick="deleteFood"
+        />
 
 </RelativeLayout>

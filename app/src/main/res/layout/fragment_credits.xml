@@ -39,8 +39,8 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:textColor="@color/textColorPrimary"
-        android:textSize="30dp"
-        android:text="Di Carlo Luca\nFierimonte Marco\nMarabese Emilia"
+        android:textSize="35dp"
+        android:text="Di Carlo Luca\nFierimonte Marco"
 
         />
 </RelativeLayout>

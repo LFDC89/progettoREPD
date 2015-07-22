@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.List;
@@ -135,9 +136,26 @@ public class FoodDetailsActivityHome extends ActionBarActivity
         startActivity(intent);
     }
 
+    public void deleteFood(View view)
+    {
+        List<Food> temp = FoodsData.foodsData;
 
+        String start_data_string = DataPreferences.readPreference(view.getContext(), DataPreferences.PREFS_USER_FOODS, DataPreferences.PUF_KEY);
 
+        final String[] start_data_indexes = start_data_string.split(",");
 
+        int string_lenght = start_data_indexes.length;
 
+        String new_data_string = new String();
+        String delete = String.valueOf(position) + ",";
 
+        new_data_string = start_data_string.replace(delete,"");
+
+        Toast msg = Toast.makeText(view.getContext(),new_data_string,Toast.LENGTH_LONG);
+        msg.show();
+
+        // starting HomeFragment
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
 }

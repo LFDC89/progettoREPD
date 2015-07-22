@@ -146,8 +146,10 @@ public class HomeFragment extends Fragment
         Typeface CF_nutrients_home = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Girls_Have_Many Secrets.ttf");
 
         // apply custom font to kcal values
+        TextView kcal_percentage_textView = (TextView) rootView.findViewById(R.id.fragment_home_percentage);
         TextView kcal_consumed_textView = (TextView) rootView.findViewById(R.id.fragment_home_kcal_consumed);
         TextView kcal_total_textView = (TextView) rootView.findViewById(R.id.fragment_home_kcal_total);
+        kcal_percentage_textView.setTypeface(CF_nutrients_home);
         kcal_consumed_textView.setTypeface(CF_nutrients_home);
         kcal_total_textView.setTypeface(CF_nutrients_home);
 
@@ -169,8 +171,6 @@ public class HomeFragment extends Fragment
 
         TextView lipids_value_textview = (TextView) rootView.findViewById(R.id.fragment_home_lipids_value);
         lipids_value_textview.setTypeface(CF_nutrients_home);
-
-
 
 
         /* PROGRESS BAR STUFF */
@@ -213,18 +213,21 @@ public class HomeFragment extends Fragment
         }
 
         // update text view values
-        String proteins_string = String.valueOf(proteins);
-        String carbohydrates_string = String.valueOf(carbohydrates);
-        String lipids_string = String.valueOf(lipids);
+          String proteins_string = String.valueOf(proteins);
+          String carbohydrates_string = String.valueOf(carbohydrates);
+          String lipids_string = String.valueOf(lipids);
 
         // display only the first 2 decimal values
-        proteins_value_textView.setText(proteins_string.substring(0, 5));
-        carbohydrates_value_textView.setText(carbohydrates_string.substring(0,5));
-        lipids_value_textview.setText(lipids_string.substring(0,5));
+          proteins_value_textView.setText(proteins_string.substring(0, 5));
+          carbohydrates_value_textView.setText(carbohydrates_string);
+          lipids_value_textview.setText(lipids_string.substring(0, 5));
 
         kcal_consumed_textView.setText(String.valueOf(kcal_consumed));
         kcal_total_textView.setText(String.valueOf(kcal_total));
 
+        double percentage = (double) kcal_consumed/kcal_total * 100;
+
+        kcal_percentage_textView.setText((String.valueOf(percentage)).substring(0,4)+"%");
         // updating progress bar values
         final  ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.fragment_home_progressBar);
         progressBar.setMax(kcal_total);
