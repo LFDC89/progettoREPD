@@ -96,10 +96,6 @@ public class FoodDetailsActivitySearch extends ActionBarActivity
             TextView info_search_textView = (TextView) findViewById(R.id.activity_food_details_search_info);
             Typeface CF_info_search = Typeface.createFromAsset(getAssets(), "fonts/Girls_Have_Many Secrets.ttf");
             info_search_textView.setTypeface(CF_info_search);
-
-
-
-
         }
     }
 
@@ -120,7 +116,8 @@ public class FoodDetailsActivitySearch extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 
